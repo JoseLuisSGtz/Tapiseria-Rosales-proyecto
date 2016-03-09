@@ -1,0 +1,2 @@
+Al ser creado el menubar se tiene que agregar los menus con jMenuBar1.add(jMenu1); al igual que para agreagar un
+menuitem a un menu es jMenu1.add(jMenuItem1); y de igual forma el radiobuttonmenuitem jMenu1.add(jRadioButtonMenuItem1);
