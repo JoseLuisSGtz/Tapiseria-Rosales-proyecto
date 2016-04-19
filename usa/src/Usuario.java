@@ -1,10 +1,11 @@
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 public class Usuario extends javax.swing.JFrame {
 
-    
+    boolean estadoFoco = false;
     public Usuario() {
         initComponents();
     }
@@ -23,7 +24,8 @@ public class Usuario extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        tpass = new javax.swing.JPasswordField();
+        jLabel5 = new javax.swing.JLabel();
 
         jTextField1.setText("jTextField1");
 
@@ -44,8 +46,6 @@ public class Usuario extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("D:\\net\\images (1).jpg")); // NOI18N
-
         jButton3.setText("Inicio");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -53,16 +53,12 @@ public class Usuario extends javax.swing.JFrame {
             }
         });
 
+        jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\Cholo Luis\\Desktop\\memo\\net\\images (1).jpg")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(174, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
-                .addGap(157, 157, 157))
             .addGroup(layout.createSequentialGroup()
                 .addGap(62, 62, 62)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -74,26 +70,35 @@ public class Usuario extends javax.swing.JFrame {
                         .addGap(85, 85, 85)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-                            .addComponent(jPasswordField1))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(tpass))))
+                .addContainerGap(26, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3))
+                .addGap(157, 157, 157))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(37, 37, 37)
                 .addComponent(jLabel3)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel5)
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tpass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addComponent(jButton3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
         );
 
@@ -105,18 +110,42 @@ public class Usuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-String us="luis";
-String co="asd01";
-Icon Correcto=new ImageIcon("D:\\net\\correct.jpg");
-Icon Incorrect=new ImageIcon("D:\\net\\error.jpg");
-if(us.equals(jTextField2.getText())&&co.equals(jPasswordField1.getText())){
-    jLabel4.setText("Inició correctamente");
-    jLabel4.setIcon(Correcto);
-}else{
-    jLabel4.setText("hay un error, vuelve a igresar tú usuario u contraseña");
-    jLabel4.setIcon(Incorrect); 
-}
-new salas().setVisible(true);
+int valida = validaForma();
+        if(valida == 0) {
+            Dtusuario objUsuario = new Dtusuario();
+            if(objUsuario.valUs(jTextField2.getText(), tpass.getPassword()) != 0)
+            {
+                salas objMenu = new salas();
+                this.setVisible(false);
+                objMenu.setVisible(true);
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Nombre de usuario o contraseña incorrectos");
+                jTextField2.setText("");
+                tpass.setText("");
+                jTextField2.requestFocus();
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "El nombre de usuario y contraseña son requeridos");
+            if(valida == 2)
+                tpass.requestFocus();
+            else
+               jTextField2.requestFocus(); 
+        }
+//String us="luis";
+//String co="asd01";
+//Icon Correcto=new ImageIcon("C:\\Users\\Cholo Luis\\Desktop\\memo\\net\\correct.jpg");
+//Icon Incorrect=new ImageIcon("C:\\Users\\Cholo Luis\\Desktop\\memo\\net\\error.jpg");
+//if(us.equals(jTextField2.getText())&&co.equals(jPasswordField1.getText())){
+    //jLabel4.setText("Inició correctamente");
+    //jLabel4.setIcon(Correcto);
+   // new salas().setVisible(true);
+//}else{
+    //jLabel4.setText("hay un error, vuelve a igresar tú usuario u contraseña");
+  //  jLabel4.setIcon(Incorrect); 
+//}
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -156,6 +185,20 @@ new salas().setVisible(true);
             }
         });
     }
+      public int validaForma() {
+        int controlFalta = 0;
+        //boolean correcto = false;
+        
+        if((jTextField2.getText().isEmpty()))
+            controlFalta += 1;
+        if((tpass.getPassword().length) == 0)
+            controlFalta +=2;
+        
+        /*if(!(txtNomUsuario.getText().isEmpty()) && (txtPassword.getPassword().length) >0)
+            correcto = true;*/
+        
+        return controlFalta;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -165,8 +208,9 @@ new salas().setVisible(true);
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JPasswordField tpass;
     // End of variables declaration//GEN-END:variables
 }
